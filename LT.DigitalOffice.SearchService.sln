@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchService", "src\SearchService\SearchService.csproj", "{C71CC587-5960-4CCF-8495-D4123B79C586}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{539CBEA9-1D88-4A98-83CB-13E57F423A90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A7B10D6D-9659-4D21-94FD-4065348DDC8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3133E390-B12F-4D45-9163-82C53784115F}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		Common.Configurations.targets = Common.Configurations.targets
+		Dockerfile = Dockerfile
+		.github\workflows\main.yml = .github\workflows\main.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchService.Models.Dto", "src\SearchService.Models.Dto\SearchService.Models.Dto.csproj", "{DBB76598-8408-49B8-A989-021DB075F04E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchService.Bussines", "src\SearchService.Bussines\SearchService.Bussines.csproj", "{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C71CC587-5960-4CCF-8495-D4123B79C586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C71CC587-5960-4CCF-8495-D4123B79C586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C71CC587-5960-4CCF-8495-D4123B79C586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C71CC587-5960-4CCF-8495-D4123B79C586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBB76598-8408-49B8-A989-021DB075F04E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBB76598-8408-49B8-A989-021DB075F04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBB76598-8408-49B8-A989-021DB075F04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBB76598-8408-49B8-A989-021DB075F04E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C71CC587-5960-4CCF-8495-D4123B79C586} = {539CBEA9-1D88-4A98-83CB-13E57F423A90}
+		{DBB76598-8408-49B8-A989-021DB075F04E} = {539CBEA9-1D88-4A98-83CB-13E57F423A90}
+		{1E458C1F-9B28-4BE9-A4AA-843CED8337E0} = {539CBEA9-1D88-4A98-83CB-13E57F423A90}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {121BC9A1-19A2-4973-ABAC-75354D2201E3}
+	EndGlobalSection
+EndGlobal
