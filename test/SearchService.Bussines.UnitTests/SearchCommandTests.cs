@@ -4,6 +4,7 @@ using LT.DigitalOffice.Models.Broker.Requests.Project;
 using LT.DigitalOffice.Models.Broker.Responses.Project;
 using LT.DigitalOffice.SearchService.Models.Dto.Enums;
 using LT.DigitalOffice.SearchService.Models.Dto.Models;
+using LT.DigitalOffice.SearchService.Models.Dto.Requests;
 using LT.DigitalOffice.SearchService.Models.Dto.Responses;
 using LT.DigitalOffice.UnitTestKernel;
 using MassTransit;
@@ -89,7 +90,7 @@ namespace SearchService.Bussines.UnitTests
                 Errors = new List<string>()
             };
 
-            SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project"));
+            SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project", new SearchFilter { IncludeProjects = true } ));
         }
 
         [Test]
@@ -119,7 +120,7 @@ namespace SearchService.Bussines.UnitTests
                 Errors = new List<string> { "Cannot search projects. Please try again later." }
             };
 
-            SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project"));
+            SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project", new SearchFilter { IncludeProjects = true }));
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace SearchService.Bussines.UnitTests
                 Errors = new List<string> { "Cannot search projects. Please try again later." }
             };
 
-            SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project"));
+            SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project", new SearchFilter { IncludeProjects = true }));
         }
     }
 }

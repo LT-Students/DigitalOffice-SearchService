@@ -3,6 +3,7 @@ using LT.DigitalOffice.Models.Broker.Requests.Project;
 using LT.DigitalOffice.Models.Broker.Responses.Project;
 using LT.DigitalOffice.SearchService.Models.Dto.Enums;
 using LT.DigitalOffice.SearchService.Models.Dto.Models;
+using LT.DigitalOffice.SearchService.Models.Dto.Requests;
 using LT.DigitalOffice.SearchService.Models.Dto.Responses;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -65,13 +66,16 @@ namespace SearchService.Bussines.Commands.Search
             _logger = logger;
         }
 
-        public SearchResponse Execute(string text)
+        public SearchResponse Execute(string text, SearchFilter filter)
         {
             List<string> errors = new();
 
             List<SearchResultInfo> response = new();
 
-            response.AddRange(SearchProjects(text, errors));
+            if (filter.IncludeAll || filter.IsIncludeProjects)
+            {
+                response.AddRange(SearchProjects(text, errors));
+            }
 
             return new SearchResponse
             {

@@ -2,8 +2,4 @@
 
   <Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\DigitalOffice-Models\src\Models\Models.csproj" />
-  </ItemGroup>
-
 </Project>
