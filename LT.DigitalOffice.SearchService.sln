@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchService.Models.Dto", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchService.Bussines", "src\SearchService.Bussines\SearchService.Bussines.csproj", "{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "..\DigitalOffice-Models\src\Models\Models.csproj", "{CE84DF59-EEB0-4597-A52D-9FF8F63AA474}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchService.Bussines.UnitTests", "test\SearchService.Bussines.UnitTests\SearchService.Bussines.UnitTests.csproj", "{65DD34C7-DA90-4F70-A13F-DA6881C46A71}"
 EndProject
 Global
@@ -45,10 +43,6 @@ Global
 		{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E458C1F-9B28-4BE9-A4AA-843CED8337E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE84DF59-EEB0-4597-A52D-9FF8F63AA474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE84DF59-EEB0-4597-A52D-9FF8F63AA474}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE84DF59-EEB0-4597-A52D-9FF8F63AA474}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE84DF59-EEB0-4597-A52D-9FF8F63AA474}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65DD34C7-DA90-4F70-A13F-DA6881C46A71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65DD34C7-DA90-4F70-A13F-DA6881C46A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65DD34C7-DA90-4F70-A13F-DA6881C46A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
