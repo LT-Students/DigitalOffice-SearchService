@@ -91,6 +91,9 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project", new SearchFilter { IncludeProjects = true } ));
+            _mocker.Verify<IRequestClient<ISearchProjectsRequest>>(x =>
+                x.GetResponse<IOperationResult<ISearchProjectsResponse>>(It.IsAny<object>(), default, default),
+                Times.Once);
         }
 
         [Test]
@@ -121,6 +124,9 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project", new SearchFilter { IncludeProjects = true }));
+            _mocker.Verify<IRequestClient<ISearchProjectsRequest>>(x =>
+                x.GetResponse<IOperationResult<ISearchProjectsResponse>>(It.IsAny<object>(), default, default),
+                Times.Once);
         }
 
         [Test]
@@ -139,6 +145,9 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project", new SearchFilter { IncludeProjects = true }));
+            _mocker.Verify<IRequestClient<ISearchProjectsRequest>>(x =>
+                x.GetResponse<IOperationResult<ISearchProjectsResponse>>(It.IsAny<object>(), default, default),
+                Times.Once);
         }
     }
 }
