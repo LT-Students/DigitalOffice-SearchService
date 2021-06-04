@@ -50,7 +50,7 @@ namespace SearchService.Bussines.Commands.Search
             }
             catch (Exception exc)
             {
-                _logger.LogWarning(exc, errorMessage);
+                _logger.LogError(exc, errorMessage);
 
                 errors.Add(errorMessage);
             }
