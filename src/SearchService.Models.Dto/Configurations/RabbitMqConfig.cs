@@ -11,10 +11,10 @@ namespace LT.DigitalOffice.SearchService.Models.Dto.Configurations
         [AutoInjectRequest(typeof(ISearchProjectsRequest))]
         public string SearchProjectsEndpoint { get; set; }
 
-        [AutoInjectRequest(typeof(ISearchUsersRequests))]
+        [AutoInjectRequest(typeof(ISearchUsersRequest))]
         public string SearchUsersEndpoint { get; set; }
 
-        [AutoInjectRequest(typeof(ISearchDepartmentsRequests))]
+        [AutoInjectRequest(typeof(ISearchDepartmentsRequest))]
         public string SearchDepartmentsEndpoint { get; set; }
     }
 }

@@ -123,7 +123,7 @@ namespace SearchService.Bussines.UnitTests
                 .Returns(null as List<string>);
 
             _mocker
-                .Setup<IRequestClient<ISearchUsersRequests>, Task<Response<IOperationResult<ISearchResponse>>>>(
+                .Setup<IRequestClient<ISearchUsersRequest>, Task<Response<IOperationResult<ISearchResponse>>>>(
                     x => x.GetResponse<IOperationResult<ISearchResponse>>(
                         It.IsAny<object>(), default, default))
                 .Returns(Task.FromResult(_brokerSearchResponseMock.Object));
@@ -173,7 +173,7 @@ namespace SearchService.Bussines.UnitTests
                 .Returns(null as List<string>);
 
             _mocker
-                .Setup<IRequestClient<ISearchDepartmentsRequests>, Task<Response<IOperationResult<ISearchResponse>>>>(
+                .Setup<IRequestClient<ISearchDepartmentsRequest>, Task<Response<IOperationResult<ISearchResponse>>>>(
                     x => x.GetResponse<IOperationResult<ISearchResponse>>(
                         It.IsAny<object>(), default, default))
                 .Returns(Task.FromResult(_brokerSearchResponseMock.Object));
@@ -269,7 +269,7 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("User", new SearchFilter { IncludeUsers = true }));
-            _mocker.Verify<IRequestClient<ISearchUsersRequests>>(x =>
+            _mocker.Verify<IRequestClient<ISearchUsersRequest>>(x =>
                 x.GetResponse<IOperationResult<ISearchResponse>>(It.IsAny<object>(), default, default),
                 Times.Once);
         }
@@ -290,7 +290,7 @@ namespace SearchService.Bussines.UnitTests
                 .Returns(null as List<string>);
 
             _mocker
-                .Setup<IRequestClient<ISearchUsersRequests>, Task<Response<IOperationResult<ISearchResponse>>>>(
+                .Setup<IRequestClient<ISearchUsersRequest>, Task<Response<IOperationResult<ISearchResponse>>>>(
                     x => x.GetResponse<IOperationResult<ISearchResponse>>(
                         It.IsAny<object>(), default, default))
                 .Returns(Task.FromResult(_brokerSearchResponseMock.Object));
@@ -302,7 +302,7 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("User", new SearchFilter { IncludeUsers = true }));
-            _mocker.Verify<IRequestClient<ISearchUsersRequests>>(x =>
+            _mocker.Verify<IRequestClient<ISearchUsersRequest>>(x =>
                 x.GetResponse<IOperationResult<ISearchResponse>>(It.IsAny<object>(), default, default),
                 Times.Once);
         }
@@ -311,7 +311,7 @@ namespace SearchService.Bussines.UnitTests
         public void ShouldReturnEmptyListOfItemsWhenUsersRequestThrowException()
         {
             _mocker
-                .Setup<IRequestClient<ISearchUsersRequests>, Task<Response<IOperationResult<ISearchResponse>>>>(
+                .Setup<IRequestClient<ISearchUsersRequest>, Task<Response<IOperationResult<ISearchResponse>>>>(
                     x => x.GetResponse<IOperationResult<ISearchResponse>>(
                         It.IsAny<object>(), default, default))
                 .Throws(new Exception());
@@ -323,7 +323,7 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("User", new SearchFilter { IncludeUsers = true }));
-            _mocker.Verify<IRequestClient<ISearchUsersRequests>>(x =>
+            _mocker.Verify<IRequestClient<ISearchUsersRequest>>(x =>
                 x.GetResponse<IOperationResult<ISearchResponse>>(It.IsAny<object>(), default, default),
                 Times.Once);
         }
@@ -340,7 +340,7 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("Department", new SearchFilter { IncludeDepartments = true }));
-            _mocker.Verify<IRequestClient<ISearchDepartmentsRequests>>(x =>
+            _mocker.Verify<IRequestClient<ISearchDepartmentsRequest>>(x =>
                 x.GetResponse<IOperationResult<ISearchResponse>>(It.IsAny<object>(), default, default),
                 Times.Once);
         }
@@ -361,7 +361,7 @@ namespace SearchService.Bussines.UnitTests
                 .Returns(null as List<string>);
 
             _mocker
-                .Setup<IRequestClient<ISearchDepartmentsRequests>, Task<Response<IOperationResult<ISearchResponse>>>>(
+                .Setup<IRequestClient<ISearchDepartmentsRequest>, Task<Response<IOperationResult<ISearchResponse>>>>(
                     x => x.GetResponse<IOperationResult<ISearchResponse>>(
                         It.IsAny<object>(), default, default))
                 .Returns(Task.FromResult(_brokerSearchResponseMock.Object));
@@ -373,7 +373,7 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project", new SearchFilter { IncludeDepartments = true }));
-            _mocker.Verify<IRequestClient<ISearchDepartmentsRequests>>(x =>
+            _mocker.Verify<IRequestClient<ISearchDepartmentsRequest>>(x =>
                 x.GetResponse<IOperationResult<ISearchResponse>>(It.IsAny<object>(), default, default),
                 Times.Once);
         }
@@ -382,7 +382,7 @@ namespace SearchService.Bussines.UnitTests
         public void ShouldReturnEmptyListOfItemsWhenDepartmentsRequestThrowException()
         {
             _mocker
-                .Setup<IRequestClient<ISearchDepartmentsRequests>, Task<Response<IOperationResult<ISearchResponse>>>>(
+                .Setup<IRequestClient<ISearchDepartmentsRequest>, Task<Response<IOperationResult<ISearchResponse>>>>(
                     x => x.GetResponse<IOperationResult<ISearchResponse>>(
                         It.IsAny<object>(), default, default))
                 .Throws(new Exception());
@@ -394,7 +394,7 @@ namespace SearchService.Bussines.UnitTests
             };
 
             SerializerAssert.AreEqual(expectedResponse, _command.Execute("Project", new SearchFilter { IncludeDepartments = true }));
-            _mocker.Verify<IRequestClient<ISearchDepartmentsRequests>>(x =>
+            _mocker.Verify<IRequestClient<ISearchDepartmentsRequest>>(x =>
                 x.GetResponse<IOperationResult<ISearchResponse>>(It.IsAny<object>(), default, default),
                 Times.Once);
         }

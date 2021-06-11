@@ -19,8 +19,8 @@ namespace SearchService.Bussines.Commands.Search
     public class SearchCommand : ISearchCommand
     {
         private IRequestClient<ISearchProjectsRequest> _rcProjects;
-        private IRequestClient<ISearchUsersRequests> _rcUsers;
-        private IRequestClient<ISearchDepartmentsRequests> _rcDepartments;
+        private IRequestClient<ISearchUsersRequest> _rcUsers;
+        private IRequestClient<ISearchDepartmentsRequest> _rcDepartments;
         private ILogger<SearchCommand> _logger;
 
         #region requests
@@ -73,7 +73,7 @@ namespace SearchService.Bussines.Commands.Search
             try
             {
                 var response = _rcDepartments.GetResponse<IOperationResult<ISearchResponse>>(
-                    ISearchDepartmentsRequests.CreateObj(text)).Result;
+                    ISearchDepartmentsRequest.CreateObj(text)).Result;
 
                 if (response.Message.IsSuccess)
                 {
@@ -112,7 +112,7 @@ namespace SearchService.Bussines.Commands.Search
             try
             {
                 var response = _rcUsers.GetResponse<IOperationResult<ISearchResponse>>(
-                    ISearchUsersRequests.CreateObj(text)).Result;
+                    ISearchUsersRequest.CreateObj(text)).Result;
 
                 if (response.Message.IsSuccess)
                 {
@@ -146,8 +146,8 @@ namespace SearchService.Bussines.Commands.Search
 
         public SearchCommand(
             IRequestClient<ISearchProjectsRequest> rcProjects,
-            IRequestClient<ISearchUsersRequests> rcUsers,
-            IRequestClient<ISearchDepartmentsRequests> rcDepartments,
+            IRequestClient<ISearchUsersRequest> rcUsers,
+            IRequestClient<ISearchDepartmentsRequest> rcDepartments,
             ILogger<SearchCommand> logger)
         {
             _rcProjects = rcProjects;
