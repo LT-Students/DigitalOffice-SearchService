@@ -3,6 +3,7 @@ using LT.DigitalOffice.Kernel.Configurations;
 using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Middlewares.ApiInformation;
 using LT.DigitalOffice.Kernel.Middlewares.Token;
+using LT.DigitalOffice.SearchService.Models.Dto.Configurations;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -58,7 +59,7 @@ namespace LT.DigitalOffice.SearchService
 
             _rabbitMqConfig = Configuration
                 .GetSection(BaseRabbitMqConfig.SectionName)
-                .Get<BaseRabbitMqConfig>();
+                .Get<RabbitMqConfig>();
 
             Version = "1.0.0";
             Description = "SearchService is an API that intended to find any information.";

@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-
     <ProjectReference Include="..\SearchService.Bussines\SearchService.Bussines.csproj" />
     <ProjectReference Include="..\SearchService.Models.Dto\SearchService.Models.Dto.csproj" />
   </ItemGroup>
