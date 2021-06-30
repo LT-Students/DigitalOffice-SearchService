@@ -2,7 +2,7 @@
 
 namespace LT.DigitalOffice.SearchService.Models.Dto.Requests
 {
-    public class SearchFilter
+    public record SearchFilter
     {
         [FromQuery(Name = "includeusers")]
         public bool? IncludeUsers { get; set; }
