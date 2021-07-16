@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="$(ProjectDir)..\..\Common.Configurations.targets" />
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\SearchService.Bussines\SearchService.Bussines.csproj" />
+	</ItemGroup>
+
+</Project>
