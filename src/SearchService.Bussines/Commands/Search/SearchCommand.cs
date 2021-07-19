@@ -42,7 +42,7 @@ namespace SearchService.Bussines.Commands.Search
                         response.Message.Body.Entities.Select(
                             p => new SearchResultInfo
                             {
-                                Type = SearchResultObjectType.Project,
+                                Type = SearchResultObjectType.Project.ToString(),
                                 Id = p.Id,
                                 Value = p.Value
                             }).ToList());
@@ -81,7 +81,7 @@ namespace SearchService.Bussines.Commands.Search
                         response.Message.Body.Entities.Select(
                             p => new SearchResultInfo
                             {
-                                Type = SearchResultObjectType.Department,
+                                Type = SearchResultObjectType.Department.ToString(),
                                 Id = p.Id,
                                 Value = p.Value
                             }).ToList());
@@ -120,7 +120,7 @@ namespace SearchService.Bussines.Commands.Search
                         response.Message.Body.Entities.Select(
                             p => new SearchResultInfo
                             {
-                                Type = SearchResultObjectType.User,
+                                Type = SearchResultObjectType.User.ToString(),
                                 Id = p.Id,
                                 Value = p.Value
                             }).ToList());

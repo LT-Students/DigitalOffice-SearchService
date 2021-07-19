@@ -42,19 +42,19 @@ namespace SearchService.Bussines.UnitTests
             {
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.Project,
+                    Type = SearchResultObjectType.Project.ToString(),
                     Id = entities[0].Id,
                     Value = entities[0].Value
                 },
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.Project,
+                    Type = SearchResultObjectType.Project.ToString(),
                     Id = entities[1].Id,
                     Value = entities[1].Value
                 },
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.Project,
+                    Type = SearchResultObjectType.Project.ToString(),
                     Id = entities[2].Id,
                     Value = entities[2].Value
                 },
@@ -92,19 +92,19 @@ namespace SearchService.Bussines.UnitTests
             {
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.User,
+                    Type = SearchResultObjectType.User.ToString(),
                     Id = entities[0].Id,
                     Value = entities[0].Value
                 },
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.User,
+                    Type = SearchResultObjectType.User.ToString(),
                     Id = entities[1].Id,
                     Value = entities[1].Value
                 },
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.User,
+                    Type = SearchResultObjectType.User.ToString(),
                     Id = entities[2].Id,
                     Value = entities[2].Value
                 },
@@ -142,19 +142,19 @@ namespace SearchService.Bussines.UnitTests
             {
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.Department,
+                    Type = SearchResultObjectType.Department.ToString(),
                     Id = entities[0].Id,
                     Value = entities[0].Value
                 },
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.Department,
+                    Type = SearchResultObjectType.Department.ToString(),
                     Id = entities[1].Id,
                     Value = entities[1].Value
                 },
                 new SearchResultInfo
                 {
-                    Type = SearchResultObjectType.Department,
+                    Type = SearchResultObjectType.Department.ToString(),
                     Id = entities[2].Id,
                     Value = entities[2].Value
                 },
