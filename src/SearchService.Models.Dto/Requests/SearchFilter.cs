@@ -2,22 +2,19 @@
 
 namespace LT.DigitalOffice.SearchService.Models.Dto.Requests
 {
-    public record SearchFilter
-    {
-        [FromQuery(Name = "includeusers")]
-        public bool? IncludeUsers { get; set; }
+  public record SearchFilter
+  {
+    [FromQuery(Name = "includeusers")]
+    public bool IncludeUsers { get; set; } = false;
 
-        [FromQuery(Name = "includeprojects")]
-        public bool? IncludeProjects { get; set; }
+    [FromQuery(Name = "includeprojects")]
+    public bool IncludeProjects { get; set; } = false;
 
-        [FromQuery(Name = "includedepartments")]
-        public bool? IncludeDepartments { get; set; }
+    [FromQuery(Name = "includedepartments")]
+    public bool IncludeDepartments { get; set; } = false;
 
-        public bool IsIncludeUsers => IncludeUsers.HasValue && IncludeUsers.Value;
-        public bool IsIncludeProjects => IncludeProjects.HasValue && IncludeProjects.Value;
-        public bool IsIncludeDepartments => IncludeDepartments.HasValue && IncludeDepartments.Value;
-        public bool IncludeAll => !IncludeUsers.HasValue
-                                    && !IncludeProjects.HasValue
-                                    && !IncludeDepartments.HasValue;
-    }
+    public bool IncludeAll => !IncludeUsers
+      && !IncludeProjects
+      && !IncludeDepartments;
+  }
 }
