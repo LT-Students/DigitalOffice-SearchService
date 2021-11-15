@@ -174,19 +174,23 @@ namespace SearchService.Bussines.Commands.Search
 
       await Task.WhenAll(projectTask, userTask, departmentTask);
 
-      if (projectTask is not null)
+      List<SearchResultInfo> projects = await projectTask;
+      List<SearchResultInfo> departments = await departmentTask;
+      List<SearchResultInfo> users = await userTask;
+
+      if (projects is not null)
       {
-        response.AddRange(await projectTask);
+        response.AddRange(projects);
       }
 
-      if (userTask is not null)
+      if (users is not null)
       {
-        response.AddRange(await userTask);
+        response.AddRange(users);
       }
 
-      if (departmentTask is not null)
+      if (departments is not null)
       {
-        response.AddRange(await departmentTask);
+        response.AddRange(departments);
       }
 
       return new SearchResponse
