@@ -52,15 +52,12 @@ namespace SearchService.Bussines.Commands.Search
         }
 
         _logger.LogWarning(errorMessage);
-
-        errors.Add(errorMessage);
       }
       catch (Exception exc)
       {
         _logger.LogError(exc, errorMessage);
-
-        errors.Add(errorMessage);
       }
+      errors.Add(errorMessage);
 
       return projects;
     }
@@ -91,15 +88,12 @@ namespace SearchService.Bussines.Commands.Search
         }
 
         _logger.LogWarning(errorMessage);
-
-        errors.Add(errorMessage);
       }
       catch (Exception exc)
       {
         _logger.LogError(exc, errorMessage);
-
-        errors.Add(errorMessage);
       }
+      errors.Add(errorMessage);
 
       return departments;
     }
@@ -130,15 +124,12 @@ namespace SearchService.Bussines.Commands.Search
         }
 
         _logger.LogWarning(errorMessage);
-
-        errors.Add(errorMessage);
       }
       catch (Exception exc)
       {
         _logger.LogError(exc, errorMessage);
-
-        errors.Add(errorMessage);
       }
+      errors.Add(errorMessage);
 
       return users;
     }
