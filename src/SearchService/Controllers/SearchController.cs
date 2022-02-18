@@ -10,7 +10,7 @@ namespace LT.DigitalOffice.SearchService.Controllers
   [ApiController]
   public class SearchController : ControllerBase
   {
-    [HttpGet]
+    [HttpGet("get")]
     public async Task<SearchResponse> SearchAsync(
       [FromServices] ISearchCommand command,
       [FromQuery] string text,
