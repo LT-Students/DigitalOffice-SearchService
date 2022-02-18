@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LT.DigitalOffice.Kernel.BrokerSupport.Broker;
 using LT.DigitalOffice.Models.Broker.Requests.Department;
+using LT.DigitalOffice.Models.Broker.Requests.News;
 using LT.DigitalOffice.Models.Broker.Requests.Project;
 using LT.DigitalOffice.Models.Broker.Requests.User;
 using LT.DigitalOffice.Models.Broker.Responses.Search;
@@ -22,6 +23,7 @@ namespace SearchService.Bussines.Commands.Search
     private IRequestClient<ISearchProjectsRequest> _rcProjects;
     private IRequestClient<ISearchUsersRequest> _rcUsers;
     private IRequestClient<ISearchDepartmentsRequest> _rcDepartments;
+    private IRequestClient<ISearchNewsRequest> _rcNews;
     private ILogger<SearchCommand> _logger;
 
     #region requests
@@ -134,17 +136,55 @@ namespace SearchService.Bussines.Commands.Search
       return users;
     }
 
+    private async Task<List<SearchResultInfo>> SearchNewsAsync(string text, List<string> errors)
+    {
+      List<SearchResultInfo> news = new();
+
+      string errorMessage = "Cannot search news. Please try again later.";
+
+      try
+      {
+        var response = await _rcNews.GetResponse<IOperationResult<ISearchResponse>>(
+          ISearchNewsRequest.CreateObj(text));
+
+        if (response.Message.IsSuccess)
+        {
+          news.AddRange(
+            response.Message.Body.Entities.Select(
+              n => new SearchResultInfo
+              {
+                Type = SearchResultObjectType.News,
+                Id = n.Id,
+                Value = n.Value
+              }).ToList());
+
+          return news;
+        }
+
+        _logger.LogWarning(errorMessage);
+      }
+      catch (Exception exc)
+      {
+        _logger.LogError(exc, errorMessage);
+      }
+      errors.Add(errorMessage);
+
+      return news;
+    }
+
     #endregion
 
     public SearchCommand(
       IRequestClient<ISearchProjectsRequest> rcProjects,
       IRequestClient<ISearchUsersRequest> rcUsers,
       IRequestClient<ISearchDepartmentsRequest> rcDepartments,
+      IRequestClient<ISearchNewsRequest> rcNews,
       ILogger<SearchCommand> logger)
     {
       _rcProjects = rcProjects;
       _rcUsers = rcUsers;
       _rcDepartments = rcDepartments;
+      _rcNews = rcNews;
       _logger = logger;
     }
 
@@ -163,11 +203,15 @@ namespace SearchService.Bussines.Commands.Search
       Task<List<SearchResultInfo>> departmentTask = filter.IncludeAll || filter.IncludeDepartments
         ? SearchDepartmentsAsync(text, errors) : Task.FromResult(null as List<SearchResultInfo>);
 
-      await Task.WhenAll(projectTask, userTask, departmentTask);
+      Task<List<SearchResultInfo>> newsTask = filter.IncludeAll || filter.IncludeNews
+        ? SearchNewsAsync(text, errors) : Task.FromResult(null as List<SearchResultInfo>);
+
+      await Task.WhenAll(projectTask, userTask, departmentTask, newsTask);
 
       List<SearchResultInfo> projects = await projectTask;
       List<SearchResultInfo> departments = await departmentTask;
       List<SearchResultInfo> users = await userTask;
+      List<SearchResultInfo> news = await newsTask;
 
       if (projects is not null)
       {
@@ -182,6 +226,11 @@ namespace SearchService.Bussines.Commands.Search
       if (departments is not null)
       {
         response.AddRange(departments);
+      }
+
+      if (news is not null)
+      {
+        response.AddRange(news);
       }
 
       return new SearchResponse
