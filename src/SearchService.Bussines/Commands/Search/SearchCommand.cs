@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LT.DigitalOffice.Kernel.BrokerSupport.Broker;
+using LT.DigitalOffice.Kernel.BrokerSupport.Helpers;
 using LT.DigitalOffice.Models.Broker.Requests.Department;
 using LT.DigitalOffice.Models.Broker.Requests.News;
 using LT.DigitalOffice.Models.Broker.Requests.Project;
@@ -142,31 +143,26 @@ namespace SearchService.Bussines.Commands.Search
 
       string errorMessage = "Cannot search news. Please try again later.";
 
-      try
+      var response = await RequestHandler.ProcessRequest<ISearchNewsRequest, ISearchResponse>(
+        _rcNews,
+        ISearchNewsRequest.CreateObj(text),
+        errors,
+        _logger);
+
+      if (response.Entities is not null)
       {
-        var response = await _rcNews.GetResponse<IOperationResult<ISearchResponse>>(
-          ISearchNewsRequest.CreateObj(text));
+        news.AddRange(
+          response.Entities.Select(
+            n => new SearchResultInfo
+            {
+              Type = SearchResultObjectType.News,
+              Id = n.Id,
+              Value = n.Value
+            }).ToList());
 
-        if (response.Message.IsSuccess)
-        {
-          news.AddRange(
-            response.Message.Body.Entities.Select(
-              n => new SearchResultInfo
-              {
-                Type = SearchResultObjectType.News,
-                Id = n.Id,
-                Value = n.Value
-              }).ToList());
-
-          return news;
-        }
-
-        _logger.LogWarning(errorMessage);
+        return news;
       }
-      catch (Exception exc)
-      {
-        _logger.LogError(exc, errorMessage);
-      }
+
       errors.Add(errorMessage);
 
       return news;
