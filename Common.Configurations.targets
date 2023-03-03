@@ -2,7 +2,7 @@
 
 <Project>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>LT.DigitalOffice.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>LT.DigitalOffice.$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
@@ -26,9 +26,9 @@
   </PropertyGroup>
 
   <ItemGroup Condition="$(AssemblyName.Contains('.UnitTests')) != 'true'">
-      <PackageReference Include="LT.DigitalOffice.Kernel" Version="1.1.56" />
-      <PackageReference Include="LT.DigitalOffice.Kernel.BrokerSupport" Version="1.0.4" />
-      <PackageReference Include="LT.DigitalOffice.Models" Version="1.0.67" />
+      <PackageReference Include="DigitalOffice.Kernel" Version="1.0.10" />
+      <PackageReference Include="DigitalOffice.Kernel.BrokerSupport" Version="1.0.6" />
+      <PackageReference Include="DigitalOffice.Models" Version="1.0.22" />
   </ItemGroup>
 
   <ItemGroup Condition="$(AssemblyName.Contains('.UnitTests'))">
