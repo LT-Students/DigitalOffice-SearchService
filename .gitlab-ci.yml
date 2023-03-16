@@ -1,0 +1,47 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  stage: build
+  script:
+    - docker build -t cr.yandex/crpe1q3mq9mlhfajanpj/searchservice:$CI_COMMIT_SHORT_SHA -f Dockerfile .
+
+unit-test-job:
+  stage: test
+  script:
+    - echo "Skip unit test run"
+
+lint-test-job:
+  stage: test
+  script:
+    - echo "Skip linter jobs"
+
+docker-push-job:
+  stage: deploy
+  only:
+    - preprod
+    - dev
+  script:
+    - cat $DOCKER_REGISTRY_KEY | docker login --username json_key --password-stdin cr.yandex
+    - docker tag cr.yandex/crpe1q3mq9mlhfajanpj/searchservice:$CI_COMMIT_SHORT_SHA cr.yandex/crpe1q3mq9mlhfajanpj/searchservice:$CI_COMMIT_REF_SLUG
+    - docker push cr.yandex/crpe1q3mq9mlhfajanpj/searchservice:$CI_COMMIT_REF_SLUG
+
+deploy-job:
+  stage: deploy
+  needs: ["docker-push-job"]
+  only:
+    - preprod
+    - dev
+  script:
+    - |
+      eval $(ssh-agent -s)
+      echo "$STAND_SSH_KEY" | ssh-add -
+      ssh ubuntu@ltdo-${CI_COMMIT_REF_SLUG}.ru-central1.internal -o StrictHostKeyChecking=no <<ENDSSH
+      cat .key-puller.key | docker login --username json_key --password-stdin cr.yandex
+      docker pull cr.yandex/crpe1q3mq9mlhfajanpj/searchservice:$CI_COMMIT_REF_SLUG
+      cd ~/platform/services
+      REGISTRY=cr.yandex/crpe1q3mq9mlhfajanpj BRANCH_NAME=${CI_COMMIT_REF_SLUG} docker-compose up -d
+      ENDSSH
+
