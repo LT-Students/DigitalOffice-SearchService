@@ -21,6 +21,7 @@ lint-test-job:
 docker-push-job:
   stage: deploy
   only:
+    - prod
     - preprod
     - dev
   script:
@@ -32,6 +33,7 @@ deploy-job:
   stage: deploy
   needs: ["docker-push-job"]
   only:
+    - prod
     - preprod
     - dev
   script:
@@ -42,6 +44,6 @@ deploy-job:
       cat .key-puller.key | docker login --username json_key --password-stdin cr.yandex
       docker pull cr.yandex/crpe1q3mq9mlhfajanpj/searchservice:$CI_COMMIT_REF_SLUG
       cd ~/platform/services
-      REGISTRY=cr.yandex/crpe1q3mq9mlhfajanpj BRANCH_NAME=${CI_COMMIT_REF_SLUG} docker-compose up -d
+      REGISTRY=cr.yandex/crpe1q3mq9mlhfajanpj BRANCH_NAME=${CI_COMMIT_REF_SLUG} docker-compose --profile ${CI_COMMIT_REF_SLUG} up -d
       ENDSSH
 
