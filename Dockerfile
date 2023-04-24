@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim AS build
 WORKDIR /app
 
 COPY . ./
-RUN dotnet restore -s https://baget.ltdo.xyz/v3/index.json -s https://api.nuget.org/v3/index.json
+RUN dotnet restore -s https://api.nuget.org/v3/index.json
 
 COPY . ./
 RUN dotnet publish -c Release -o out
