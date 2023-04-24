@@ -27,8 +27,8 @@
 
   <ItemGroup Condition="$(AssemblyName.Contains('.UnitTests')) != 'true'">
       <PackageReference Include="DigitalOffice.Kernel" Version="1.0.10" />
-      <PackageReference Include="DigitalOffice.Kernel.BrokerSupport" Version="1.0.6" />
-      <PackageReference Include="DigitalOffice.Models" Version="1.0.22" />
+      <PackageReference Include="DigitalOffice.Kernel.BrokerSupport" Version="1.0.7" />
+      <PackageReference Include="DigitalOffice.Models" Version="1.0.23" />
   </ItemGroup>
 
   <ItemGroup Condition="$(AssemblyName.Contains('.UnitTests'))">

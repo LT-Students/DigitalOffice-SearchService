@@ -98,7 +98,7 @@ namespace LT.DigitalOffice.SearchService
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers().RequireCors(CorsPolicyName);
-        endpoints.MapHealthChecks($"/{_serviceInfoConfig.Id}/hc", new HealthCheckOptions
+        endpoints.MapHealthChecks($"/hc", new HealthCheckOptions
         {
           ResultStatusCodes = new Dictionary<HealthStatus, int>
           {
