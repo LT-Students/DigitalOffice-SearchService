@@ -1,239 +1,165 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LT.DigitalOffice.Kernel.BrokerSupport.Broker;
+using DigitalOffice.Models.Broker.Models.Department;
+using DigitalOffice.Models.Broker.Models.News;
+using DigitalOffice.Models.Broker.Models.Office;
+using DigitalOffice.Models.Broker.Models.Project;
+using DigitalOffice.Models.Broker.Models.User;
+using DigitalOffice.Models.Broker.Models.Wiki;
 using LT.DigitalOffice.Kernel.BrokerSupport.Helpers;
 using LT.DigitalOffice.Models.Broker.Requests.Department;
 using LT.DigitalOffice.Models.Broker.Requests.News;
+using LT.DigitalOffice.Models.Broker.Requests.Office;
 using LT.DigitalOffice.Models.Broker.Requests.Project;
 using LT.DigitalOffice.Models.Broker.Requests.User;
+using LT.DigitalOffice.Models.Broker.Requests.Wiki;
 using LT.DigitalOffice.Models.Broker.Responses.Search;
-using LT.DigitalOffice.SearchService.Models.Dto.Enums;
-using LT.DigitalOffice.SearchService.Models.Dto.Models;
 using LT.DigitalOffice.SearchService.Models.Dto.Requests;
-using LT.DigitalOffice.SearchService.Models.Dto.Responses;
+using LT.DigitalOffice.SearchService.Models.Dto.Response;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using SearchService.Bussines.Commands.Search.Interfaces;
 
-namespace SearchService.Bussines.Commands.Search
+namespace SearchService.Bussines.Commands.Search;
+
+public class SearchCommand : ISearchCommand
 {
-  public class SearchCommand : ISearchCommand
+  private readonly IRequestClient<ISearchDepartmentsRequest> _rcDepartments;
+  private readonly IRequestClient<ISearchNewsRequest> _rcNews;
+  private readonly IRequestClient<ISearchOfficesRequest> _rcOffices;
+  private readonly IRequestClient<ISearchProjectsRequest> _rcProjects;
+  private readonly IRequestClient<ISearchUsersRequest> _rcUsers;
+  private readonly IRequestClient<ISearchWikiRequest> _rcWiki;
+  private readonly ILogger<SearchCommand> _logger;
+
+  public SearchCommand(
+    IRequestClient<ISearchDepartmentsRequest> rcDepartments,
+    IRequestClient<ISearchNewsRequest> rcNews,
+    IRequestClient<ISearchOfficesRequest> rcOffices,
+    IRequestClient<ISearchProjectsRequest> rcProjects,
+    IRequestClient<ISearchUsersRequest> rcUsers,
+    IRequestClient<ISearchWikiRequest> rcWiki,
+    ILogger<SearchCommand> logger)
   {
-    private IRequestClient<ISearchProjectsRequest> _rcProjects;
-    private IRequestClient<ISearchUsersRequest> _rcUsers;
-    private IRequestClient<ISearchDepartmentsRequest> _rcDepartments;
-    private IRequestClient<ISearchNewsRequest> _rcNews;
-    private ILogger<SearchCommand> _logger;
+    _rcUsers = rcUsers;
+    _rcDepartments = rcDepartments;
+    _rcOffices = rcOffices;
+    _rcProjects = rcProjects;
+    _rcNews = rcNews;
+    _rcWiki = rcWiki;
+    _logger = logger;
+  }
 
-    #region requests
-
-    private async Task<List<SearchResultInfo>> SearchProjectsAsync(string text, List<string> errors)
+  public async Task<SearchResultResponse> ExecuteAsync(string text, SearchFilter filter)
+  {
+    if (!filter.IncludeDepartments &&
+        !filter.IncludeNews &&
+        !filter.IncludeOffices &&
+        !filter.IncludeProjects &&
+        !filter.IncludeUsers &&
+        !filter.IncludeWiki)
     {
-      List<SearchResultInfo> projects = new();
-
-      string errorMessage = "Cannot search projects. Please try again later.";
-
-      try
-      {
-        var response = await _rcProjects.GetResponse<IOperationResult<ISearchResponse>>(
-          ISearchProjectsRequest.CreateObj(text));
-
-        if (response.Message.IsSuccess)
-        {
-          projects.AddRange(
-            response.Message.Body.Entities.Select(
-              p => new SearchResultInfo
-              {
-                Type = SearchResultObjectType.Project,
-                Id = p.Id,
-                Value = p.Value
-              }).ToList());
-
-          return projects;
-        }
-
-        _logger.LogWarning(errorMessage);
-      }
-      catch (Exception exc)
-      {
-        _logger.LogError(exc, errorMessage);
-      }
-      errors.Add(errorMessage);
-
-      return projects;
+      filter.IncludeDepartments = filter.IncludeNews = filter.IncludeOffices =
+        filter.IncludeProjects = filter.IncludeUsers = filter.IncludeWiki = true;
     }
 
-    private async Task<List<SearchResultInfo>> SearchDepartmentsAsync(string text, List<string> errors)
+    SearchResultResponse result = new();
+
+    Regex regex = new Regex("[^а-яёА-ЯЁa-zA-Z0-9\\s]");
+    text = regex.Replace(text, " ");
+
+    if (string.IsNullOrEmpty(text))
     {
-      List<SearchResultInfo> departments = new();
-
-      string errorMessage = "Cannot search departments. Please try again later.";
-
-      try
-      {
-        var response = await _rcDepartments.GetResponse<IOperationResult<ISearchResponse>>(
-          ISearchDepartmentsRequest.CreateObj(text));
-
-        if (response.Message.IsSuccess)
-        {
-          departments.AddRange(
-            response.Message.Body.Entities.Select(
-              p => new SearchResultInfo
-              {
-                Type = SearchResultObjectType.Department,
-                Id = p.Id,
-                Value = p.Value
-              }).ToList());
-
-          return departments;
-        }
-
-        _logger.LogWarning(errorMessage);
-      }
-      catch (Exception exc)
-      {
-        _logger.LogError(exc, errorMessage);
-      }
-      errors.Add(errorMessage);
-
-      return departments;
+      return result;
     }
 
-    private async Task<List<SearchResultInfo>> SearchUsersAsync(string text, List<string> errors)
+    string[] words = text.ToLower().Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+    if (filter.IncludeDepartments)
     {
-      List<SearchResultInfo> users = new();
+      ISearchResponse<DepartmentSearchData> departments =
+        await _rcDepartments.ProcessRequest<ISearchDepartmentsRequest, ISearchResponse<DepartmentSearchData>>(
+          ISearchDepartmentsRequest.CreateObj(words));
 
-      string errorMessage = "Cannot search users. Please try again later.";
-
-      try
+      if (departments is null)
       {
-        var response = await _rcUsers.GetResponse<IOperationResult<ISearchResponse>>(
-          ISearchUsersRequest.CreateObj(text));
-
-        if (response.Message.IsSuccess)
-        {
-          users.AddRange(
-            response.Message.Body.Entities.Select(
-              p => new SearchResultInfo
-              {
-                Type = SearchResultObjectType.User,
-                Id = p.Id,
-                Value = p.Value
-              }).ToList());
-
-          return users;
-        }
-
-        _logger.LogWarning(errorMessage);
+        _logger.LogError($"No response from DepartmentService");
       }
-      catch (Exception exc)
-      {
-        _logger.LogError(exc, errorMessage);
-      }
-      errors.Add(errorMessage);
 
-      return users;
+      result.Department = departments;
     }
 
-    private async Task<List<SearchResultInfo>> SearchNewsAsync(string text, List<string> errors)
+    if (filter.IncludeNews)
     {
-      List<SearchResultInfo> news = new();
+      ISearchResponse<NewsSearchData> news =
+        await _rcNews.ProcessRequest<ISearchNewsRequest, ISearchResponse<NewsSearchData>>(
+          ISearchNewsRequest.CreateObj(words));
 
-      string errorMessage = "Cannot search news. Please try again later.";
-
-      var response = await RequestHandler.ProcessRequest<ISearchNewsRequest, ISearchResponse>(
-        _rcNews,
-        ISearchNewsRequest.CreateObj(text),
-        errors,
-        _logger);
-
-      if (response.Entities is not null)
+      if (news is null)
       {
-        news.AddRange(
-          response.Entities.Select(
-            n => new SearchResultInfo
-            {
-              Type = SearchResultObjectType.News,
-              Id = n.Id,
-              Value = n.Value
-            }).ToList());
-
-        return news;
+        _logger.LogError($"No response from NewsService");
       }
 
-      errors.Add(errorMessage);
-
-      return news;
+      result.News = news;
     }
 
-    #endregion
-
-    public SearchCommand(
-      IRequestClient<ISearchProjectsRequest> rcProjects,
-      IRequestClient<ISearchUsersRequest> rcUsers,
-      IRequestClient<ISearchDepartmentsRequest> rcDepartments,
-      IRequestClient<ISearchNewsRequest> rcNews,
-      ILogger<SearchCommand> logger)
+    if (filter.IncludeOffices)
     {
-      _rcProjects = rcProjects;
-      _rcUsers = rcUsers;
-      _rcDepartments = rcDepartments;
-      _rcNews = rcNews;
-      _logger = logger;
+      ISearchResponse<OfficeSearchData> offices =
+        await _rcOffices.ProcessRequest<ISearchOfficesRequest, ISearchResponse<OfficeSearchData>>(
+          ISearchOfficesRequest.CreateObj(words));
+
+      if (offices is null)
+      {
+        _logger.LogError($"No response from OfficeService");
+      }
+
+      result.Office = offices;
     }
 
-    public async Task<SearchResponse> ExecuteAsync(string text, SearchFilter filter)
+    if (filter.IncludeProjects)
     {
-      List<string> errors = new();
+      ISearchResponse<ProjectSearchData> projects =
+        await _rcProjects.ProcessRequest<ISearchProjectsRequest, ISearchResponse<ProjectSearchData>>(
+          ISearchProjectsRequest.CreateObj(words));
 
-      List<SearchResultInfo> response = new();
-
-      Task<List<SearchResultInfo>> projectTask = filter.IncludeAll || filter.IncludeProjects
-        ? SearchProjectsAsync(text, errors) : Task.FromResult(null as List<SearchResultInfo>);
-
-      Task<List<SearchResultInfo>> userTask = filter.IncludeAll || filter.IncludeUsers
-        ? SearchUsersAsync(text, errors) : Task.FromResult(null as List<SearchResultInfo>);
-
-      Task<List<SearchResultInfo>> departmentTask = filter.IncludeAll || filter.IncludeDepartments
-        ? SearchDepartmentsAsync(text, errors) : Task.FromResult(null as List<SearchResultInfo>);
-
-      Task<List<SearchResultInfo>> newsTask = filter.IncludeAll || filter.IncludeNews
-        ? SearchNewsAsync(text, errors) : Task.FromResult(null as List<SearchResultInfo>);
-
-      await Task.WhenAll(projectTask, userTask, departmentTask, newsTask);
-
-      List<SearchResultInfo> projects = await projectTask;
-      List<SearchResultInfo> departments = await departmentTask;
-      List<SearchResultInfo> users = await userTask;
-      List<SearchResultInfo> news = await newsTask;
-
-      if (projects is not null)
+      if (projects is null)
       {
-        response.AddRange(projects);
+        _logger.LogError($"No response from ProjectService");
       }
 
-      if (users is not null)
-      {
-        response.AddRange(users);
-      }
-
-      if (departments is not null)
-      {
-        response.AddRange(departments);
-      }
-
-      if (news is not null)
-      {
-        response.AddRange(news);
-      }
-
-      return new SearchResponse
-      {
-        Items = response,
-        Errors = errors
-      };
+      result.Project = projects;
     }
+
+    if (filter.IncludeUsers)
+    {
+      ISearchResponse<UserSearchData> users =
+        await _rcUsers.ProcessRequest<ISearchUsersRequest, ISearchResponse<UserSearchData>>(
+          ISearchUsersRequest.CreateObj(words));
+
+      if (users is null)
+      {
+        _logger.LogError($"No response from UserService");
+      }
+
+      result.User = users;
+    }
+
+    if (filter.IncludeWiki)
+    {
+      ISearchResponse<WikiSearchData> wiki =
+        await _rcWiki.ProcessRequest<ISearchWikiRequest, ISearchResponse<WikiSearchData>>(
+          ISearchWikiRequest.CreateObj(words));
+
+      if (wiki is null)
+      {
+        _logger.LogError($"No response from WikiService");
+      }
+
+      result.Wiki = wiki;
+    }
+
+    return result;
   }
 }
