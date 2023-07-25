@@ -3,7 +3,7 @@ using DigitalOffice.Models.Broker.Models.News;
 using DigitalOffice.Models.Broker.Models.Office;
 using DigitalOffice.Models.Broker.Models.Project;
 using DigitalOffice.Models.Broker.Models.User;
-using DigitalOffice.Models.Broker.Models.Wiki;
+using DigitalOffice.Models.Broker.Responses.Search;
 using LT.DigitalOffice.Models.Broker.Responses.Search;
 
 namespace LT.DigitalOffice.SearchService.Models.Dto.Response;
@@ -15,7 +15,7 @@ public class SearchResultResponse
   public ISearchResponse<OfficeSearchData> Office { get; set; }
   public ISearchResponse<ProjectSearchData> Project { get; set; }
   public ISearchResponse<UserSearchData> User { get; set; }
-  public ISearchResponse<WikiSearchData> Wiki { get; set; }
+  public ISearchWikiResponse Wiki { get; set; }
 
   public SearchResultResponse(
       ISearchResponse<DepartmentSearchData> department = null,
@@ -23,7 +23,7 @@ public class SearchResultResponse
       ISearchResponse<OfficeSearchData> office = null,
       ISearchResponse<ProjectSearchData> project = null,
       ISearchResponse<UserSearchData> user = null,
-      ISearchResponse<WikiSearchData> wiki = null)
+      ISearchWikiResponse wiki = null)
   {
     Department = department;
     News = news;

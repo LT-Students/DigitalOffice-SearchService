@@ -1,11 +1,11 @@
-﻿using LT.DigitalOffice.Kernel.BrokerSupport.Attributes;
+﻿using DigitalOffice.Models.Broker.Requests.Wiki;
+using LT.DigitalOffice.Kernel.BrokerSupport.Attributes;
 using LT.DigitalOffice.Kernel.BrokerSupport.Configurations;
 using LT.DigitalOffice.Models.Broker.Requests.Department;
 using LT.DigitalOffice.Models.Broker.Requests.News;
 using LT.DigitalOffice.Models.Broker.Requests.Office;
 using LT.DigitalOffice.Models.Broker.Requests.Project;
 using LT.DigitalOffice.Models.Broker.Requests.User;
-using LT.DigitalOffice.Models.Broker.Requests.Wiki;
 
 namespace LT.DigitalOffice.SearchService.Broker.Configurations;
 

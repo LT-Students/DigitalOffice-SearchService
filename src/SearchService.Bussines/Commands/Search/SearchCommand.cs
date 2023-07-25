@@ -6,14 +6,14 @@ using DigitalOffice.Models.Broker.Models.News;
 using DigitalOffice.Models.Broker.Models.Office;
 using DigitalOffice.Models.Broker.Models.Project;
 using DigitalOffice.Models.Broker.Models.User;
-using DigitalOffice.Models.Broker.Models.Wiki;
+using DigitalOffice.Models.Broker.Requests.Wiki;
+using DigitalOffice.Models.Broker.Responses.Search;
 using LT.DigitalOffice.Kernel.BrokerSupport.Helpers;
 using LT.DigitalOffice.Models.Broker.Requests.Department;
 using LT.DigitalOffice.Models.Broker.Requests.News;
 using LT.DigitalOffice.Models.Broker.Requests.Office;
 using LT.DigitalOffice.Models.Broker.Requests.Project;
 using LT.DigitalOffice.Models.Broker.Requests.User;
-using LT.DigitalOffice.Models.Broker.Requests.Wiki;
 using LT.DigitalOffice.Models.Broker.Responses.Search;
 using LT.DigitalOffice.SearchService.Models.Dto.Requests;
 using LT.DigitalOffice.SearchService.Models.Dto.Response;
@@ -148,8 +148,8 @@ public class SearchCommand : ISearchCommand
 
     if (filter.IncludeWiki)
     {
-      ISearchResponse<WikiSearchData> wiki =
-        await _rcWiki.ProcessRequest<ISearchWikiRequest, ISearchResponse<WikiSearchData>>(
+      ISearchWikiResponse wiki =
+        await _rcWiki.ProcessRequest<ISearchWikiRequest, ISearchWikiResponse>(
           ISearchWikiRequest.CreateObj(words));
 
       if (wiki is null)
