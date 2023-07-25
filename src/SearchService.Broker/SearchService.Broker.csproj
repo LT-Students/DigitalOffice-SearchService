@@ -6,5 +6,4 @@
       <ProjectReference Include="..\SearchService.Models.Dto\SearchService.Models.Dto.csproj" />
     </ItemGroup>
 
-
 </Project>
