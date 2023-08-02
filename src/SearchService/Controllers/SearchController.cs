@@ -13,6 +13,10 @@ namespace LT.DigitalOffice.SearchService.Controllers;
 [ApiController]
 public class SearchController : ControllerBase
 {
+  /// <summary>
+  /// Global search.
+  /// </summary>
+  /// <param name="text">Search text.</param>
   [HttpGet("search")]
   [SwaggerOperationFilter(typeof(TokenOperationFilter))]
   [ProducesResponseType(StatusCodes.Status200OK)]
