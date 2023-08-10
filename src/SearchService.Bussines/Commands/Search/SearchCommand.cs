@@ -76,88 +76,100 @@ public class SearchCommand : ISearchCommand
 
     string[] words = text.ToLower().Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
+    Task<ISearchResponse<DepartmentSearchData>> departments = null;
+    Task<ISearchResponse<NewsSearchData>> news = null;
+    Task<ISearchResponse<OfficeSearchData>> offices = null;
+    Task<ISearchResponse<ProjectSearchData>> projects = null;
+    Task<ISearchResponse<UserSearchData>> users = null;
+    Task<ISearchWikiResponse> wiki = null;
+
     if (filter.IncludeDepartments)
     {
-      ISearchResponse<DepartmentSearchData> departments =
-        await _rcDepartments.ProcessRequest<ISearchDepartmentsRequest, ISearchResponse<DepartmentSearchData>>(
-          ISearchDepartmentsRequest.CreateObj(words));
-
-      if (departments is null)
-      {
-        _logger.LogError($"No response from DepartmentService");
-      }
-
-      result.Department = departments;
+      departments = _rcDepartments.ProcessRequest<ISearchDepartmentsRequest, ISearchResponse<DepartmentSearchData>>(
+         ISearchDepartmentsRequest.CreateObj(words));
     }
 
     if (filter.IncludeNews)
     {
-      ISearchResponse<NewsSearchData> news =
-        await _rcNews.ProcessRequest<ISearchNewsRequest, ISearchResponse<NewsSearchData>>(
+      news = _rcNews.ProcessRequest<ISearchNewsRequest, ISearchResponse<NewsSearchData>>(
           ISearchNewsRequest.CreateObj(words));
-
-      if (news is null)
-      {
-        _logger.LogError($"No response from NewsService");
-      }
-
-      result.News = news;
     }
 
     if (filter.IncludeOffices)
     {
-      ISearchResponse<OfficeSearchData> offices =
-        await _rcOffices.ProcessRequest<ISearchOfficesRequest, ISearchResponse<OfficeSearchData>>(
+      offices = _rcOffices.ProcessRequest<ISearchOfficesRequest, ISearchResponse<OfficeSearchData>>(
           ISearchOfficesRequest.CreateObj(words));
-
-      if (offices is null)
-      {
-        _logger.LogError($"No response from OfficeService");
-      }
-
-      result.Office = offices;
     }
 
     if (filter.IncludeProjects)
     {
-      ISearchResponse<ProjectSearchData> projects =
-        await _rcProjects.ProcessRequest<ISearchProjectsRequest, ISearchResponse<ProjectSearchData>>(
+      projects = _rcProjects.ProcessRequest<ISearchProjectsRequest, ISearchResponse<ProjectSearchData>>(
           ISearchProjectsRequest.CreateObj(words));
-
-      if (projects is null)
-      {
-        _logger.LogError($"No response from ProjectService");
-      }
-
-      result.Project = projects;
     }
 
     if (filter.IncludeUsers)
     {
-      ISearchResponse<UserSearchData> users =
-        await _rcUsers.ProcessRequest<ISearchUsersRequest, ISearchResponse<UserSearchData>>(
+      users = _rcUsers.ProcessRequest<ISearchUsersRequest, ISearchResponse<UserSearchData>>(
           ISearchUsersRequest.CreateObj(words));
-
-      if (users is null)
-      {
-        _logger.LogError($"No response from UserService");
-      }
-
-      result.User = users;
     }
 
     if (filter.IncludeWiki)
     {
-      ISearchWikiResponse wiki =
-        await _rcWiki.ProcessRequest<ISearchWikiRequest, ISearchWikiResponse>(
+      wiki = _rcWiki.ProcessRequest<ISearchWikiRequest, ISearchWikiResponse>(
           ISearchWikiRequest.CreateObj(words));
+    }
+    result.Department = filter.IncludeDepartments
+          ? await departments
+          : null;
 
-      if (wiki is null)
-      {
-        _logger.LogError($"No response from WikiService");
-      }
+    if (filter.IncludeDepartments && result.Department is null)
+    {
+      _logger.LogError($"No response from DepartmentService");
+    }
 
-      result.Wiki = wiki;
+    result.News = filter.IncludeNews
+      ? await news
+      : null;
+
+    if (filter.IncludeNews && result.News is null)
+    {
+      _logger.LogError($"No response from NewsService");
+    }
+
+    result.Office = filter.IncludeOffices
+      ? await offices
+      : null;
+
+    if (filter.IncludeOffices && result.Office is null)
+    {
+      _logger.LogError($"No response from OfficeService");
+    }
+
+    result.Project = filter.IncludeProjects
+      ? await projects
+      : null;
+
+    if (filter.IncludeProjects && result.Project is null)
+    {
+      _logger.LogError($"No response from ProjectService");
+    }
+
+    result.User = filter.IncludeUsers
+      ? await users
+      : null;
+
+    if (filter.IncludeUsers && result.User is null)
+    {
+      _logger.LogError($"No response from UserService");
+    }
+
+    result.Wiki = filter.IncludeWiki
+      ? await wiki
+      : null;
+
+    if (filter.IncludeWiki && result.Wiki is null)
+    {
+      _logger.LogError($"No response from WikiService");
     }
 
     return result;
