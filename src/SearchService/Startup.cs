@@ -9,6 +9,7 @@ using LT.DigitalOffice.Kernel.BrokerSupport.Middlewares.Token;
 using LT.DigitalOffice.Kernel.Configurations;
 using LT.DigitalOffice.Kernel.Extensions;
 using LT.DigitalOffice.Kernel.Middlewares.ApiInformation;
+using LT.DigitalOffice.Models.Broker.Responses.Search;
 using LT.DigitalOffice.SearchService.Broker.Configurations;
 using LT.DigitalOffice.SearchService.Models.Dto.Response;
 using Microsoft.AspNetCore.Builder;
@@ -95,9 +96,11 @@ public class Startup : BaseApiInfo
 
       string controllersXmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
       string modelsXmlFileName = $"{Assembly.GetAssembly(typeof(SearchResultResponse)).GetName().Name}.xml";
+      string brokerModelsXmlFileName = $"{Assembly.GetAssembly(typeof(ISearchResponse<>)).GetName().Name}.xml";
 
       options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, controllersXmlFileName));
       options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, modelsXmlFileName));
+      options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, brokerModelsXmlFileName));
 
       options.EnableAnnotations();
     });
