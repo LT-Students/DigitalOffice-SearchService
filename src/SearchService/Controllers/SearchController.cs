@@ -19,7 +19,7 @@ public class SearchController : ControllerBase
   /// <param name="text">Search text.</param>
   [HttpGet("search")]
   [SwaggerOperationFilter(typeof(TokenOperationFilter))]
-  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(typeof(SearchResultResponse), StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   public async Task<SearchResultResponse> SearchAsync(
     [FromServices] ISearchCommand command,
