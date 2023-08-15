@@ -66,7 +66,7 @@ public class SearchCommand : ISearchCommand
 
     SearchResultResponse result = new();
 
-    Regex regex = new Regex("[^а-яёА-ЯЁa-zA-Z0-9\\s]");
+    Regex regex = new ("[^а-яёА-ЯЁa-zA-Z0-9\\s]");
     text = regex.Replace(text, " ");
 
     if (string.IsNullOrEmpty(text))
@@ -85,38 +85,38 @@ public class SearchCommand : ISearchCommand
 
     if (filter.IncludeDepartments)
     {
-      departmentsSearchResponse = _rcDepartments.ProcessRequest<ISearchDepartmentsRequest,
-        ISearchResponse<DepartmentSearchData>>(ISearchDepartmentsRequest.CreateObj(words));
+      departmentsSearchResponse = _rcDepartments.ProcessRequest<ISearchDepartmentsRequest, ISearchResponse<DepartmentSearchData>>(
+        ISearchDepartmentsRequest.CreateObj(words));
     }
 
     if (filter.IncludeNews)
     {
-      newsSearchResponse = _rcNews.ProcessRequest<ISearchNewsRequest,
-        ISearchResponse<NewsSearchData>>(ISearchNewsRequest.CreateObj(words));
+      newsSearchResponse = _rcNews.ProcessRequest<ISearchNewsRequest, ISearchResponse<NewsSearchData>>(
+        ISearchNewsRequest.CreateObj(words));
     }
 
     if (filter.IncludeOffices)
     {
-      officesSearchResponse = _rcOffices.ProcessRequest<ISearchOfficesRequest,
-        ISearchResponse<OfficeSearchData>>(ISearchOfficesRequest.CreateObj(words));
+      officesSearchResponse = _rcOffices.ProcessRequest<ISearchOfficesRequest, ISearchResponse<OfficeSearchData>>(
+        ISearchOfficesRequest.CreateObj(words));
     }
 
     if (filter.IncludeProjects)
     {
-      projectsSearchResponse = _rcProjects.ProcessRequest<ISearchProjectsRequest,
-        ISearchResponse<ProjectSearchData>>(ISearchProjectsRequest.CreateObj(words));
+      projectsSearchResponse = _rcProjects.ProcessRequest<ISearchProjectsRequest, ISearchResponse<ProjectSearchData>>(
+        ISearchProjectsRequest.CreateObj(words));
     }
 
     if (filter.IncludeUsers)
     {
-      usersSearchResponse = _rcUsers.ProcessRequest<ISearchUsersRequest,
-        ISearchResponse<UserSearchData>>(ISearchUsersRequest.CreateObj(words));
+      usersSearchResponse = _rcUsers.ProcessRequest<ISearchUsersRequest, ISearchResponse<UserSearchData>>(
+        ISearchUsersRequest.CreateObj(words));
     }
 
     if (filter.IncludeWiki)
     {
-      wikiSearchResponse = _rcWiki.ProcessRequest<ISearchWikiRequest,
-        ISearchWikiResponse>(ISearchWikiRequest.CreateObj(words));
+      wikiSearchResponse = _rcWiki.ProcessRequest<ISearchWikiRequest, ISearchWikiResponse>(
+        ISearchWikiRequest.CreateObj(words));
     }
 
     result.Department = filter.IncludeDepartments
