@@ -18,12 +18,12 @@ public class SearchResultResponse
   public ISearchWikiResponse Wiki { get; set; }
 
   public SearchResultResponse(
-      ISearchResponse<DepartmentSearchData> department = null,
-      ISearchResponse<NewsSearchData> news = null,
-      ISearchResponse<OfficeSearchData> office = null,
-      ISearchResponse<ProjectSearchData> project = null,
-      ISearchResponse<UserSearchData> user = null,
-      ISearchWikiResponse wiki = null)
+    ISearchResponse<DepartmentSearchData> department = null,
+    ISearchResponse<NewsSearchData> news = null,
+    ISearchResponse<OfficeSearchData> office = null,
+    ISearchResponse<ProjectSearchData> project = null,
+    ISearchResponse<UserSearchData> user = null,
+    ISearchWikiResponse wiki = null)
   {
     Department = department;
     News = news;

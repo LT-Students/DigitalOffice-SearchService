@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using AspNetCoreRateLimit;
 using HealthChecks.UI.Client;
 using LT.DigitalOffice.Kernel.BrokerSupport.Configurations;
 using LT.DigitalOffice.Kernel.BrokerSupport.Extensions;
@@ -125,6 +126,8 @@ public class Startup : BaseApiInfo
     app.UseMiddleware<TokenMiddleware>();
 
     app.UseCors(CorsPolicyName);
+
+    app.UseIpRateLimiting();
 
     app.UseEndpoints(endpoints =>
     {
