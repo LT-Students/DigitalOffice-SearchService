@@ -66,7 +66,7 @@ public class SearchCommand : ISearchCommand
 
     SearchResultResponse result = new();
 
-    Regex regex = new ("[^а-яёА-ЯЁa-zA-Z0-9\\s]");
+    Regex regex = new("[^а-яёА-ЯЁa-zA-Z0-9\\s]");
     text = regex.Replace(text, " ");
 
     if (string.IsNullOrEmpty(text))
