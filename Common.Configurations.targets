@@ -26,14 +26,32 @@
   </PropertyGroup>
 
   <ItemGroup Condition="$(AssemblyName.Contains('.UnitTests')) != 'true'">
-      <PackageReference Include="DigitalOffice.Kernel" Version="1.0.10" />
-      <PackageReference Include="DigitalOffice.Kernel.BrokerSupport" Version="1.0.7" />
-      <PackageReference Include="DigitalOffice.Models" Version="1.0.23" />
+    <PackageReference Include="DigitalOffice.Kernel" Version="1.0.22" />
+    <PackageReference Include="DigitalOffice.Kernel.BrokerSupport" Version="1.0.8" />
+    <PackageReference Include="DigitalOffice.Models" Version="1.0.50" >
+      <CopyToOutputDirectory>xmldoc</CopyToOutputDirectory>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="$(AssemblyName.Contains('.UnitTests'))">
     <PackageReference Include="LT.DigitalOffice.UnitTestKernel" Version="1.0.4" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
   </ItemGroup>
+
+  <Target Name="_ResolveReferenceCopyLocalPaths" AfterTargets="ResolveReferences" DependsOnTargets="_ResolveCopyToOutputDirectory" Inputs="@(PackageReferenceWithCopyToOutputDirectory)" Outputs="%(PackageReferenceWithCopyToOutputDirectory.Identity)">
+    <PropertyGroup>
+      <PackageIdentity>%(PackageReferenceWithCopyToOutputDirectory.Identity)</PackageIdentity>
+    </PropertyGroup>
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' == '$(PackageIdentity)' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
+    </ItemGroup>
+  </Target>
+
+  <!-- This target filters all <PackageReference> entries to those with the given condition -->
+  <Target Name="_ResolveCopyToOutputDirectory">
+    <ItemGroup>
+      <PackageReferenceWithCopyToOutputDirectory Include="@(PackageReference)" Condition="'%(PackageReference.CopyToOutputDirectory)' == 'xmldoc'" />
+    </ItemGroup>
+  </Target>
 
 </Project>
